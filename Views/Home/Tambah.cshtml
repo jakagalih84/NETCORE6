@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Tambah";
+}
+
+<div class="row">
+    <form asp-action="Tambah" asp-controller="Home" method="POST">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label>NPM</label>
+            <input type="text" name="NPM" />
+        </div>
+        <div class="form-group">
+            <label>Nama</label>
+            <input type="text" name="NAMA_MHS" />
+        </div>
+        <div class="form-group">
+            <label>PAssword</label>
+            <input type="text" name="PASSWORD" />
+        </div>
+        <button type="submit" class="btn btn-success">Simpan</button>
+    </form>
+</div>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="/Home/Tambah" class="btn btn-success">Tambah</a>
+        <input type="text" id="txttest" class="txttest" />
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>NPM</th>
+                    <th>Nama</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NPM</td>
+                        <td>@item.NAMA_MHS</td>
+                        <td>
+                            <a href="/Home/Detail/@item.NPM" class="btn btn-warning">Detail</a>
+                            <button class="btn btn-info" onclick="ajaxdetail(@item.NPM)">Detail 2</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            //alert("masuk");
+        });
+
+        function ajaxdetail(npm){
+            $.ajax({
+                type: "GET",
+                url: "/Home/JsonObjek/"+npm,
+                cache: false,
+                data: {},
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    $("#txttest").val(result.Data.NPM);
+                },
+                error: function (xhr) {
+                    alert("Telah terjadi kesalahan dengan kode : " + xhr.status + ", silahkan menghubungi admin terkait.");
+                }
+            });
+        }
+    </script>
+}

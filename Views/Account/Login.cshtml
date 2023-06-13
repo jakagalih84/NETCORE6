@@ -1,0 +1,22 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    <form asp-action="LoginAct" asp-controller="Account" method="POST">
+        @Html.AntiForgeryToken()
+
+        <input type="text" class="form-control" name="NPM" />
+        <input type="password" class="form-control" name="PASSWORD" />
+        <button type="submit" class="btn btn-success">Simpan</button>
+    </form>
+</body>
+</html>
