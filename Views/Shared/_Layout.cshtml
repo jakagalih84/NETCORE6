@@ -1,54 +1,295 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <meta http-equiv=expires content=-1>
+    <meta http-equiv=Cache-Control CONTENT=no-cache>
+    <meta http-equiv=Pragma CONTENT=no-cache>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PELATIHANAPLIKASI</title>
+    <meta name="google-signin-client_id" content="869515676036-84mcpf2mvblhd5ftvj7ehmorubjscfne.apps.googleusercontent.com">
+    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
+    <title>Feeder | @ViewData["Title"]</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Assets/plugins/fontawesome-free/css/all.min.css">
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PELATIHANAPLIKASI.styles.css" asp-append-version="true" />
-    @await RenderSectionAsync("Styles", required: false)
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PELATIHANAPLIKASI</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <h1>Hi, @User.Identity.Name</h1>
-            @if(User.IsInRole("Staff")){
-                <h2>Staff</h2>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/sweetalert/sweetalert.min.js" />
+    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet" />
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/Assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/Assets/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,300,0,0" />
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap');
+
+        html {
+            height: 100vh;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+        }
+
+        .sidebar-dark-primary {
+            background-color: #30318B !important;
+        }
+        /*#F8F8FF*/
+        .user-panel, .brand-link {
+            border-bottom: 1px solid #1565C0 !important;
+        }
+        /* Remove default bullets */
+        #myUL {
+            list-style-type: none;
+        }
+
+        /* Remove margins and padding from the parent ul */
+        #myUL {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style the caret/arrow */
+        .caret {
+            cursor: pointer;
+            color: black;
+            user-select: none; /* Prevent text selection */
+        }
+
+            /* Create the caret/arrow with a unicode, and style it */
+            .caret::after {
+                color: black;
+                display: inline-block;
+                margin-right: 6px;
             }
+
+        /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+        .caret-down::before {
+            transform: rotate(90deg);
+        }
+
+        /* Hide the nested list */
+        .nested {
+            display: none;
+        }
+
+        /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+        .active {
+            display: block;
+        }
+
+        #cardd {
+            background: rgb(229,163,15);
+            background: linear-gradient(90deg, rgba(229,163,15,1) 12%, rgba(229,163,15,1) 54%, rgba(0,185,255,1) 100%);
+        }
+
+        #b-card {
+            background-color: #ffffff;
+            background-image: url("https://www.transparenttextures.com/patterns/gray-floral.png");
+        }
+
+        #butonn {
+            background: #063eff;
+            color: white;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            pointer-events: all !important;
+        }
+
+        #judulModalPartial {
+            color: black !important;
+        }
+    </style>
+
+    @await RenderSectionAsync("css", required: false)
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light text-sm bg-transparent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" id="hideSidebar" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <strong>Anda masuk sebagai</strong>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (User.IsInRole("KAA") || User.IsInRole("Kantor Akademik dan Admisi"))
+                {
+                    <li class="nav-item">
+                        <a style="cursor: pointer;" onclick="confirmPilihFakultas()" class="nav-link">
+                            <strong> Pilih Fakultas </strong>
+                        </a>
+                    </li>
+                }
+
+                <li class="nav-item">
+                    <a style="cursor: pointer;" onclick="doLogout()" class="nav-link">
+                        <i class="fas fa-sign-out-alt nav-icon"></i><strong> LOGOUT </strong>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        @*test*@
+        <aside style="min-height: 200vh; height: 100%;" class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="#" class="brand-link">
+                <img src="~/images/logo_atma.png" alt="Logo UAJY" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">
+                            FEEDER UAJY
+                        </font>
+                    </font>
+                </span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="/Assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="Gambar Pengguna">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">Nama User</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                @*<partial name="_partialMenu.cshtml" />*@
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <section class="content">
+
             @RenderBody()
-        </main>
+
+        </section>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - PELATIHANAPLIKASI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    @*        <footer class="main-footer text-sm text-center">
+    <center><strong>Copyright &copy; 2021-2022 <a href="http://uajy.ac.id">Universitas Atma Jaya Yogyakarta</a></strong></center>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    *@
+    <aside class="control-sidebar control-sidebar-dark">
+    </aside>
+
+    </div>
+
+    <div class="modal" id="ModalPartial" data-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" id="b-card">
+                    <h5 class="modal-title" id="judulModalPartial"></h5>
+                </div>
+                <div class="modal-body" id="bodyModalPartial">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/Assets/plugins/jquery/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script src="https://apis.google.com/js/client:platform.js"></script>
+
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        function confirmLogout() {
+            $.ajax({
+                type: "POST",
+                url: "/Account/LogOut",
+                success: function (result) {
+                    console.log(result);
+                    if (result == "success") {
+                        window.location.href = '@Url.Action("Login","Account")';
+                    }
+                }
+            });
+        }
+        function confirmPilihFakultas() {
+            $.ajax({
+                type: "POST",
+                url: "/Account/LoginKAA",
+                success: function (result) {
+                    console.log(result);
+                    window.location.href = ("/Account/LoginKAA");
+                }
+            });
+        }
+
+        function doLogout() {
+            Swal.fire({
+                title: 'Apakah yakin ingin logout?',
+                text: "Anda harus login ulang untuk akses sistem setelah logout",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yakin',
+                cancelButtonText: 'Kembali'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    confirmLogout();
+                }
+            })
+
+        }
+
+        $(document).ready(function () {
+        });
+
+    </script>
+
+    <!-- jQuery -->
+    <script src="~/Assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables -->
+    <script src="~/Assets/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/Assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <script src="~/Assets/plugins/datatables-rowgroup/js/dataTables.rowsGroup.js"></script>
+    <!-- Select2 -->
+    <script src="~/Assets/plugins/select2/js/select2.full.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Assets/dist/js/adminlte.js"></script>
+
+
+    <!-- Loading Overlay -->
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
+    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>*@
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

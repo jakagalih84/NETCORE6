@@ -1,37 +1,215 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
+    string id_user = "83283211-22B6-49D1-A673-ADACD1E3CFF9";
+    string tgl = DateTime.Now.ToString("dd M yyyy HH:mm");
 }
 
-<div class="row">
-    <div class="col-md-12">
-        <a href="/Home/Tambah" class="btn btn-success">Tambah</a>
-        <input type="text" id="txttest" class="txttest" />
-        <table class="table table-responsive">
-            <thead>
-                <tr>
-                    <th>NPM</th>
-                    <th>Nama</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.NPM</td>
-                        <td>@item.NAMA_MHS</td>
-                        <td>
-                            <a href="/Home/Detail/@item.NPM" class="btn btn-warning">Detail</a>
-                            <button class="btn btn-info" onclick="ajaxdetail(@item.NPM)">Detail 2</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="wrapper">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>@ViewData["Title"]</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        
+                    </div>
+                    @*<div class="col-md-6">
+                        <div class="card direct-chat direct-chat-primary">
+                            <div class="card-header ui-sortable-handle" style="cursor: move;">
+                                <h3 class="card-title">Direct Chat</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="direct-chat-messages">
+
+                                    @foreach (var item in Model)
+                                    {
+                                        if(id_user != item.id_pengirim)
+                                        {
+                                            <div class="direct-chat-msg">
+                                                <div class="direct-chat-infos clearfix">
+                                                    <span class="direct-chat-name float-left">@item.nama_user</span>
+                                                    <span class="direct-chat-timestamp float-right">@item.tgl.ToString("dd MMMM yyyy HH:mm")</span>
+                                                </div>
+
+                                                <img class="direct-chat-img" src="~/Assets/dist/img/user1-128x128.jpg" alt="message user image">
+
+                                                <div class="direct-chat-text">
+                                                    @item.isi_pesan
+                                                </div>
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="direct-chat-msg right">
+                                                <div class="direct-chat-infos clearfix">
+                                                    <span class="direct-chat-name float-right">@item.nama_user</span>
+                                                    <span class="direct-chat-timestamp float-left">@item.tgl.ToString("dd MMMM yyyy HH:mm")</span>
+                                                </div>
+
+                                                <img class="direct-chat-img" src="~/Assets/dist/img/user3-128x128.jpg" alt="message user image">
+
+                                                <div class="direct-chat-text">
+                                                    @item.isi_pesan
+                                                </div>
+
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer">
+                                <form action="#" method="post">
+                                    <div class="input-group">
+                                        <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-primary">Send</button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>*@
+
+                    <div class="col-md-12">
+                        
+                        <div class="row clearfix">
+                            <div class="col-lg-12">
+                                <div class="card chat-app">
+                                    <div id="plist" class="people-list">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" placeholder="Search...">
+                                        </div>
+                                        <ul class="list-unstyled chat-list mt-2 mb-0">
+                                            @foreach (var item in ViewBag.ChatRoom)
+                                            {
+                                                <li class="clearfix">
+                                                    <div class="about">
+                                                        <div class="name">@item.nama_ruang</div>
+                                                    </div>
+                                                </li>
+                                            }
+                                            @*<li class="clearfix">
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                                                <div class="about">
+                                                    <div class="name">Vincent Porter</div>
+                                                    <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                                                </div>
+                                            </li>
+                                            <li class="clearfix active">
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                                                <div class="about">
+                                                    <div class="name">Aiden Chavez</div>
+                                                    <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                                                </div>
+                                            </li>*@
+                                        </ul>
+                                    </div>
+                                    <div class="chat">
+                                        <div class="chat-header clearfix">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    @*<a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                                                    </a>*@
+                                                    <div class="chat-about">
+                                                        <h6 class="m-b-0">@ViewBag.ChatRoom[0].nama_ruang</h6>
+                                                        <small>@ViewBag.ChatRoom[0].deskripsi</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat-history">
+                                            <ul class="m-b-0">
+                                                @foreach (var item in Model)
+                                                {
+                                                    if(id_user == item.id_pengirim)
+                                                    {
+                                                        <li class="clearfix">
+                                                            <div class="message-data text-right">
+                                                                <span class="message-data-time">@item.tgl.ToString("dd MMMM yyyy HH:mm")</span>
+                                                            </div>
+                                                            <div class="message other-message float-right"> 
+                                                                @item.isi_pesan
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="clearfix">
+                                                            <div class="message-data">
+                                                                <span class="message-data-time">@item.tgl.ToString("dd MMMM yyyy HH:mm")</span>
+                                                            </div>
+                                                            <div class="message my-message">
+                                                                @item.isi_pesan
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                }
+                                                
+                                            </ul>
+                                        </div>
+                                        <div class="chat-message clearfix">
+                                            <div class="input-group mb-0">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-send"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control" placeholder="Enter text here...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 
+@section css{
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/chat.css" rel="stylesheet" />
+}
+
 @section Scripts{
+    
     <script>
         $(document).ready(function(){
             //alert("masuk");

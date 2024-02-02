@@ -10,7 +10,7 @@ using System.Text;
 
 namespace PELATIHANAPLIKASI.Controllers
 {
-    [Authorize(Roles = "Mahasiswa")]
+    //[Authorize(Roles = "Mahasiswa")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -24,7 +24,11 @@ namespace PELATIHANAPLIKASI.Controllers
 
         public IActionResult Index()
         {
-            var data = dao.GetMahasiswa();
+            string id_user = "83283211-22B6-49D1-A673-ADACD1E3CFF9";
+            var chatRoom = dao.GetChatRoomUser(id_user);
+            var data = dao.GetPesan();
+
+            ViewBag.ChatRoom = chatRoom;
 
             return View(data);
         }

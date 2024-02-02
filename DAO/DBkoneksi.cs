@@ -8,6 +8,6 @@
         //internet lokal
         private static string IPdb = "192.168.15.156";
 
-        public static string siatmakoneksi = $"Server={IPdb};Database=siatma_uajy;User Id=sikaa_dev;Password=sikaa_dev123!";
+        public static string siatmakoneksi = $"Server={IPdb};Database=TES;User Id=sa;Password=AdminKSIu4jy!Sikaa";
     }
 }
